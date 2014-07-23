@@ -19,12 +19,17 @@
 		<script src= "../components/angular/angular.js"></script>
 
 		<!-- Source -->
+		<script src= "../js/app.js"></script>
 
 		<!-- Specs -->
 		<script src= "app.js"></script>
 
 		<script>
-			mocha.run();
+			//in modo che quando eseguo il test con il browser tutto funzioni correttamente
+			if(navigator.userAgent.indexOf('PhantomJS') < 0)
+			{
+				mocha.run();
+			}			
 		</script>
 
 	</body>

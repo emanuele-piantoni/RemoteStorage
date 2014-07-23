@@ -27,13 +27,26 @@ module.exports = function(grunt){
 					reporter: 'spec'
 				}
 			}
+		},
 
+		mocha: {
+			test: {
+				src: ['client/test/runner.html'],
+				options: {
+					run: true,
+					log: true
+				}
+			}
 		},
 
 		watch: {
 			serverTest: {
 				files: ['server/**/*'],
 				tasks: ['mochaTest']
+			},
+			clientTest: {
+				files: ['client/**/*'],
+				tasks: ['mocha']
 			}
 		},
 

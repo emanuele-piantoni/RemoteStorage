@@ -1,0 +1,1 @@
+window.remoteStorage = angular.module('remoteStorageApp', []);
