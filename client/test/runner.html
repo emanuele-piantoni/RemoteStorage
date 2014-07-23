@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="../components/mocha/mocha.css"></link>
+	</head>
+	<body>
+		<script src= "../components/mocha/mocha.js"></script>
+		<script src= "../components/chai/chai.js"></script>
+		<script>
+			mocha.setup('bdd');
+			var expect = chai.expect;
+		</script>
+
+		<!-- Libraries -->
+		<script src= "../components/angular/angular.js"></script>
+
+		<!-- Source -->
+
+		<!-- Specs -->
+		<script src= "app.js"></script>
+
+		<script>
+			mocha.run();
+		</script>
+
+	</body>
+</html>
