@@ -14,7 +14,12 @@ module.exports = function(grunt){
 			dev: {
 				script: 'server/app.js',
 				options: {
-					watch: ['server']
+					watch: ['server'],
+					callback: function(nodemon){
+						nodemon.on('restart', function(){
+							require('fs').writeFileSync('tmp/.rebooted', 'rebooted');
+						});
+					}
 				}
 			}
 		},
@@ -47,6 +52,12 @@ module.exports = function(grunt){
 			clientTest: {
 				files: ['client/**/*'],
 				tasks: ['mocha']
+			},
+			livereload: {
+				files: ['client/**/*', 'tmp/.rebooted'],
+				options: {
+					livereload: true
+				}
 			}
 		},
 
