@@ -1,0 +1,26 @@
+{
+  "name": "remoteStorage",
+  "version": "1.0.0",
+  "authors": [
+    "Ema <emanuele.piantoni@studiofarma.it>"
+  ],
+  "description": "viewing remote file boostrap client",
+  "main": "client/index.html",
+  "keywords": [
+    "remote",
+    "storage",
+    "bootstrap"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.20"
+  }
+}
