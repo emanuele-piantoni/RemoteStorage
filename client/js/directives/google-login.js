@@ -16,7 +16,7 @@ angular.module('remoteStorageApp')
     		s.parentNode.insertBefore(po, s);
 		};
 
-		function addMeta(name, content){
+		function addMeta(name, content){								
 			var meta = document.createElement('meta');
 			meta.name = name;
 			meta.content = content;
@@ -26,6 +26,8 @@ angular.module('remoteStorageApp')
 		return {
 			restrict: "E", //sta per element -> tag
 			compile: function(element, attributes){
+				window.render = window.render || function(){};
+
 				//controllo se lo script era già stato inserito
 				if(!window.gapi){
 					addMeta('google-signin-clientid', attributes.clientId);
@@ -37,6 +39,5 @@ angular.module('remoteStorageApp')
 					window.render();
 				}
 			}
-
 		};
 }]);
