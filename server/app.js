@@ -8,7 +8,12 @@ app.get('/', function(req, res){
 });
 
 //questo significa che quando la rotta indentifica un file su disco, restituisce il file
-app.use(express.static(__dirname + '/../client'));
+app.use(express.static(__dirname + 
+	(process.env.NODE_ENV === 'dist' ? 
+		'/../client-dist' :
+		'/../client'
+	)
+));
 
 //callback viene lanciata quando il server è run
 var server = app.listen(3000, function(){

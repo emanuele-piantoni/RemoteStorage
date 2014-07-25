@@ -21,6 +21,14 @@ module.exports = function(grunt){
 						});
 					}
 				}
+			},
+			dist: {
+				script: 'server/app.js',
+				options: {
+					env: {
+						NODE_ENV: 'dist'
+					}
+				}
 			}
 		},
 
@@ -55,7 +63,7 @@ module.exports = function(grunt){
 			},
 			buildSass:{
 				files: ['client/scss/**/*'],
-				tasks: ['sass']
+				tasks: ['sass:dev']
 			},
 			livereload: {
 				files: ['client/**/*', 'tmp/.rebooted'],
@@ -67,7 +75,7 @@ module.exports = function(grunt){
 
 		concurrent: {
 			dev: {
-				tasks: ['nodemon', 'watch'],
+				tasks: ['nodemon:dev', 'watch'],
 				options: {
 					logConcurrentOutput: true 
 				}
@@ -85,6 +93,47 @@ module.exports = function(grunt){
 					//per mostrare i scss in chrome
 					sourcemap: true
 				}
+			},
+			dist: {
+				files: {
+					'client-dist/app.css': 'client/scss/app.scss'
+				},
+				options: {
+					style: 'compressed'
+				}
+			}
+		},
+
+		ngAnnotate: {
+			dist: {
+				files: {
+					'tmp/client/app.js': 
+						['client/js/app.js', 
+						 'client/js/resources/*.js', 
+						 'client/js/controllers/*.js', 
+						 'client/js/directives/*.js']
+				}
+				
+			}
+		},
+
+		uglify: {
+			dist: {
+				files: {
+					'client-dist/app.js' : [
+					 	'client/components/angular/angular.js',
+					 	'client/components/angular-resource/angular-resource.js',
+					 	'tmp/client/app.js'
+					 	]
+ 				}
+			}
+		},
+
+		processhtml: {
+			dist: {
+				files: {
+					'client-dist/index.html': ['client/index.html'] 
+				}
 			}
 		}
 
@@ -93,4 +142,5 @@ module.exports = function(grunt){
 	//permette di eseguire grunt concurrent come grunt
 	//posso specificare come default più tasks -> questi vengono eseguiti in serie
 	grunt.registerTask('default', ['concurrent']);
+	grunt.registerTask('build', ['ngAnnotate', 'uglify', 'sass:dist', 'processhtml']);
 };

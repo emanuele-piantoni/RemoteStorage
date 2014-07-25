@@ -1,0 +1,109 @@
+window.remoteStorage = angular.module('remoteStorageApp', ['ngResource'])
+	.constant('baseRoot', 'http://localhost:3000/api');
+window.remoteStorage.factory('File', ["$resource", "baseRoot", function($resource, baseRoot){
+	//si deve indicare la url di accesso alla risorsa per il suo id
+	//le altre le deduce la libreria
+	return $resource(baseRoot + '/files/:id');
+}]);
+//angular.module('remoteStorageApp')
+	//.controller('fileListCtrl', ['$scope', function($scope){
+window.remoteStorage
+	.controller('fileListCtrl', ["$scope", "File", function($scope, File){
+
+	$scope.$on('signed-in', function(){
+		$scope.fileList = File.query(); //funzione asincrona, quando sono in test diventa sincrona perche il server e un mock
+	});
+}]);
+//<rs-google-login 
+// 		current-user="currentUser" 
+//		client-id="..."
+//>
+
+window.remoteStorage
+	.directive('rsGoogleLogin', ['$rootScope', function($rootScope){
+		
+		//stampo nel dom il file js di google
+		function printJs(){
+			var po = document.createElement('script'); 
+			po.type = 'text/javascript'; 
+			po.async = true;
+    		po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
+    		var s = document.getElementsByTagName('script')[0]; 
+    		s.parentNode.insertBefore(po, s);
+		};
+
+		function addMeta(name, content){								
+			var meta = document.createElement('meta');
+			meta.name = name;
+			meta.content = content;
+			document.getElementsByTagName('head')[0].appendChild(meta);
+		};
+
+		return {
+			restrict: "E", //sta per element -> tag
+			//qui dichiaro tutto quello che espongo all'esterno
+			scope: {
+				//nome proprieta scope interno della direttiva
+				//tipo di relazione tra variabile scope interno e scope esterno (ad esempio '=' vuol dire per referenza)
+				//seguito dal nome della proprieta dello scope esterno (non e necessario se hanno lo stesso nome)
+				//currentUser: '=currentUser'  
+				currentUser: '='  
+			},
+			compile: function(element, attributes){
+				window.render = window.render || function(){
+					//emette evento per dire che la directtiva è pronta
+					$rootScope.$emit('init-current-user');
+				};
+
+				//controllo se lo script era già stato inserito
+				if(!window.gapi){
+					addMeta('google-signin-clientid', attributes.clientId);
+        			addMeta('google-signin-scope', 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email');
+        			addMeta('google-signin-requestvisibleactions', 'http://schema.org/AddAction');
+        			addMeta('google-signin-cookiepolicy', 'single_host_origin');
+					printJs();
+				}else {
+					setTimeout(window.render, 0);
+				}
+			},
+			controller: ["$scope", function($scope){
+				$scope.currentUser = {};
+
+				//questa funzione non risulta essere esposta perche lo scope di una direttiva e isolato
+				$scope.signInCallback= function(data){		
+					if(data.status && !data.status.signed_in){
+						$scope.$apply(function(){
+							$scope.currentUser.errorMessage = data.error;
+						});
+					}else {
+						gapi.client.load('plus', 'v1', function(){
+							var request = gapi.client.plus.people.get({
+								'userId': 'me'
+							});
+							request.execute($scope.updateUserDetails);
+						});
+					}
+				};
+
+				$scope.updateUserDetails = function(data){
+					$scope.$apply(function(){
+						$scope.currentUser.userDetails = data;
+					});
+				};
+
+				$rootScope.$on('init-current-user', function(){
+					$scope.$apply(function(){
+						$scope.currentUser.readyToSignIn = true;
+						$scope.currentUser.doSignIn = function(){
+								gapi.auth.signIn({
+									callback: $scope.signInCallback
+								});
+							};
+
+					});
+				});				
+				
+			}]
+
+		};
+}]);
