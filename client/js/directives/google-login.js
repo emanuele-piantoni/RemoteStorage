@@ -55,7 +55,7 @@ angular.module('remoteStorageApp')
 
 				//questa funzione non risulta essere esposta perche lo scope di una direttiva e isolato
 				$scope.signInCallback= function(data){		
-					if(data.status && !data.status.signed_id){
+					if(data.status && !data.status.signed_in){
 						$scope.$apply(function(){
 							$scope.currentUser.errorMessage = data.error;
 						});
@@ -79,7 +79,7 @@ angular.module('remoteStorageApp')
 					$scope.$apply(function(){
 						$scope.currentUser.readyToSignIn = true;
 						$scope.currentUser.doSignIn = function(){
-								gapi.auth.singIn({
+								gapi.auth.signIn({
 									callback: $scope.signInCallback
 								});
 							};

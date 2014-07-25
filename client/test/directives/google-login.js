@@ -62,7 +62,7 @@ describe('googleLogin', function(){
 				}
 
 			}, true); //true controllo anche delle sottoproprietà
-		});
+		}); 
 
 		it('handle authentication errors', function(){
 			var googleSignin = $compile(markup)($scope);
