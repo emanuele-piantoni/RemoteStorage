@@ -53,6 +53,10 @@ module.exports = function(grunt){
 				files: ['client/**/*'],
 				tasks: ['mocha']
 			},
+			buildSass:{
+				files: ['client/scss/**/*'],
+				tasks: ['sass']
+			},
 			livereload: {
 				files: ['client/**/*', 'tmp/.rebooted'],
 				options: {
@@ -68,7 +72,16 @@ module.exports = function(grunt){
 					logConcurrentOutput: true 
 				}
 			}
+		},
 
+		sass: {
+			dev: {
+				files: {
+					//file di destinzione -> file di partenza
+					//ho la possibilita di scrivere un pattern
+					'client/css/app.css': 'client/scss/app.scss'
+				}
+			}
 		}
 
 	});
