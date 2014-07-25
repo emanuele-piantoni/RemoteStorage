@@ -16,10 +16,10 @@ describe('fileList Controller', function(){
 		var scope, controller, $httpBackend;
 
 		beforeEach(function(){
-			inject(function($controller, $rootScope, $injector){
+			inject(function($controller, $rootScope, $injector, baseRoot){
 				$httpBackend = $injector.get('$httpBackend');
 				$httpBackend
-					.when('GET', 'http://localhost:3000/api/files') //setup mock (verbo, url)
+					.when('GET', baseRoot + '/files') //setup mock (verbo, url)
 					.respond([
 						{
 							name: 'la-gioconda.pdf'
@@ -33,7 +33,7 @@ describe('fileList Controller', function(){
 
 		xit('loads the file list on user sign-in', function(){
 			scope.$emit('signed-in');
-
+			$httpBackend.flush();
 			expect(scope.fileList[0].name).to.be.equal('la-gioconda.pdf');
 
 		});
