@@ -3,7 +3,7 @@
 //		client-id="..."
 //>
 
-angular.module('remoteStorageApp')
+window.remoteStorage
 	.directive('rsGoogleLogin', ['$rootScope', function($rootScope){
 		
 		//stampo nel dom il file js di google

@@ -1,1 +1,1 @@
-window.remoteStorage = angular.module('remoteStorageApp', []);
+window.remoteStorage = angular.module('remoteStorageApp', ['ngResource']);
