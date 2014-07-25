@@ -63,5 +63,18 @@ describe('googleLogin', function(){
 
 			}, true); //true controllo anche delle sottoproprietà
 		});
+
+		it('handle authentication errors', function(){
+			var googleSignin = $compile(markup)($scope);
+			var scope = googleSignin.isolateScope(); //metodo della direttiva che permette di recuperare lo scope isolato della direttiva stessa
+			scope.signInCallback({
+				status: {
+					signed_id: false
+				},
+				error: 'testing auth error'
+			});
+
+			expect($scope.username.errorMessage).to.be.equal('testing auth error');
+		});
 	});
 });

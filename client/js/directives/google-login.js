@@ -50,19 +50,38 @@ angular.module('remoteStorageApp')
 				}
 			},
 			controller: function($scope){
+				$scope.currentUser = {};
+
+				$scope.signInCallback= function(data){
+					console.log('lanciata');
+					
+					$scope.$apply(function(){
+						$scope.currentUser.errorMessage = data.error;
+					});
+				};
+
 				$rootScope.$on('init-current-user', function(){
 					$scope.$apply(function(){
-						$scope.currentUser = {
-							readyToSignIn: true,
-							doSignIn: function(){
-								gapi.auth.singIn({
-									callback: function(){}
-								});
-							}
+						//$scope.currentUser = {
+						//	readyToSignIn: true,
+						//	doSignIn: function(){
+						//		gapi.auth.singIn({
+						//			callback: function(){}
+						//		});
+						//	}
 
-						};
+						//};
+
+						$scope.currentUser.readyToSignIn = true;
+						$scope.currentUser.doSignIn = function(){
+								gapi.auth.singIn({
+									callback: $scope.signInCallback
+								});
+							};
+
 					});
-				});
+				});				
+				
 			}
 
 		};
