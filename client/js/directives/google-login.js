@@ -25,6 +25,7 @@ angular.module('remoteStorageApp')
 
 		return {
 			restrict: "E", //sta per element -> tag
+			//qui dichiaro tutto quello che espongo all'esterno
 			scope: {
 				//nome proprieta scope interno della direttiva
 				//tipo di relazione tra variabile scope interno e scope esterno (ad esempio '=' vuol dire per referenza)
@@ -52,26 +53,18 @@ angular.module('remoteStorageApp')
 			controller: function($scope){
 				$scope.currentUser = {};
 
-				$scope.signInCallback= function(data){
-					console.log('lanciata');
-					
-					$scope.$apply(function(){
-						$scope.currentUser.errorMessage = data.error;
-					});
+				//questa funzione non risulta essere esposta perche lo scope di una direttiva e isolato
+				$scope.signInCallback= function(data){		
+					if(data.status && !data.status.signed_id)
+					{
+						$scope.$apply(function(){
+							$scope.currentUser.errorMessage = data.error;
+						});
+					}					
 				};
 
 				$rootScope.$on('init-current-user', function(){
 					$scope.$apply(function(){
-						//$scope.currentUser = {
-						//	readyToSignIn: true,
-						//	doSignIn: function(){
-						//		gapi.auth.singIn({
-						//			callback: function(){}
-						//		});
-						//	}
-
-						//};
-
 						$scope.currentUser.readyToSignIn = true;
 						$scope.currentUser.doSignIn = function(){
 								gapi.auth.singIn({
