@@ -1,5 +1,5 @@
 describe('googleLogin', function(){
-	var clientId = '964626608963-elde8h4alm10o3kh4t9c1d7o0ehiagfv.apps.googleusercontent.com';
+	var clientId = '964626608963-i4ihb9fpku3uc4lsi37v7s42e5vm6ikv.apps.googleusercontent.com';
 	var markup = '<rs-google-login current-user="username" client-id="' + clientId +'">';
 
 	beforeEach(module('remoteStorageApp'));
@@ -9,7 +9,7 @@ describe('googleLogin', function(){
 			expect($injector.has('rsGoogleLoginDirective')).to.be.true;
 		});
 	});
-
+ 
 	describe('the boot phase', function(){
 		var $compile;
 		
@@ -57,7 +57,7 @@ describe('googleLogin', function(){
 					$scope.username.readyToSignIn &&
 					!$scope.username.userDetails)
 				{
-					gapi.auth.singIn = function(){ done(); };
+					gapi.auth.signIn = function(){ done(); };
 					$scope.username.doSignIn();
 				}
 
