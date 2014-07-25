@@ -76,5 +76,15 @@ describe('googleLogin', function(){
 
 			expect($scope.username.errorMessage).to.be.equal('testing auth error');
 		});
+
+		it('gets data from the user profile', function(){
+			var googleSignin = $compile(markup)($scope);
+			var scope = googleSignin.isolateScope();
+			scope.updateUserDetails({
+				id: 'Ema e Ezio'
+			});
+
+			expect($scope.username.userDetails.id).to.be.equal('Ema e Ezio');
+		});
 	});
 });

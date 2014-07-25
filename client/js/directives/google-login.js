@@ -55,12 +55,24 @@ angular.module('remoteStorageApp')
 
 				//questa funzione non risulta essere esposta perche lo scope di una direttiva e isolato
 				$scope.signInCallback= function(data){		
-					if(data.status && !data.status.signed_id)
-					{
+					if(data.status && !data.status.signed_id){
 						$scope.$apply(function(){
 							$scope.currentUser.errorMessage = data.error;
 						});
-					}					
+					}else {
+						gapi.client.load('plus', 'v1', function(){
+							var request = gapi.client.plus.people.get({
+								'userId': 'me'
+							});
+							request.execute($scope.updateUserDetails);
+						});
+					}
+				};
+
+				$scope.updateUserDetails = function(data){
+					$scope.$apply(function(){
+						$scope.currentUser.userDetails = data;
+					});
 				};
 
 				$rootScope.$on('init-current-user', function(){
