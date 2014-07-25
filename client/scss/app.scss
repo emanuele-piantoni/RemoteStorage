@@ -1,2 +1,16 @@
 //importazione file sass di bootstrap
-@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap.scss'
+@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap.scss';
+
+.header{
+	@extend .row;
+}
+
+.login-box{
+	@extend .pull-right;
+
+	button{ 
+		@extend .btn;
+		@extend .btn-primary;
+		@extend .btn-lg;		
+	}	
+}

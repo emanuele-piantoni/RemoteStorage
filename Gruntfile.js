@@ -80,6 +80,10 @@ module.exports = function(grunt){
 					//file di destinzione -> file di partenza
 					//ho la possibilita di scrivere un pattern
 					'client/css/app.css': 'client/scss/app.scss'
+				},
+				options: {
+					//per mostrare i scss in chrome
+					sourcemap: true
 				}
 			}
 		}
