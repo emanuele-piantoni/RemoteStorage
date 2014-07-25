@@ -51,8 +51,8 @@ describe('googleLogin', function(){
 		});		
 
 		it('exposes the doSignIn function', function(done){
-			var googleSignin = $compile(markup)($scope);
-			$scope.$watch('username', function(){
+			var googleSignin = $compile(markup)($scope); //fase di linking
+			$scope.$watch('username', function(){ 
 				if ($scope.username && 
 					$scope.username.readyToSignIn &&
 					!$scope.username.userDetails)
