@@ -16,7 +16,8 @@ describe('fileList Controller', function(){
 		var scope, controller, $httpBackend;
 
 		beforeEach(function(){
-			inject(function($controller, $rootScope, $injector, baseRoot){
+			//posso ignorare di passare una dipendenza, quando non passo il mock
+			inject(function($controller, $rootScope, $injector, baseRoot, File){
 				$httpBackend = $injector.get('$httpBackend');
 				$httpBackend
 					.when('GET', baseRoot + '/files') //setup mock (verbo, url)
@@ -27,11 +28,15 @@ describe('fileList Controller', function(){
 					]); //oggetto di ritorno JSON
 
 				scope = $rootScope.$new();
-				controller = $controller('fileListCtrl', { $scope: scope });
+				controller = $controller('fileListCtrl', 
+					{
+					 	$scope: scope, 
+					 	File:  File
+					});
 			});
 		});
 
-		xit('loads the file list on user sign-in', function(){
+		it('loads the file list on user sign-in', function(){
 			scope.$emit('signed-in');
 			$httpBackend.flush();
 			expect(scope.fileList[0].name).to.be.equal('la-gioconda.pdf');
